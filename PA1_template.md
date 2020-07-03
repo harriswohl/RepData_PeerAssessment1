@@ -1,11 +1,9 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
+output:
   html_document:
     keep_md: true
 ---
-
-
+# Reproducible Research Project 1  
 
 ## Loading and Preprocessing the Data
 
@@ -33,8 +31,7 @@ str(activity)
 ##  $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
 ```
 
-
-
+  
 ## Steps Per Day 
 
 Below is a histogram representing the total number of steps taken per day.  
@@ -53,11 +50,25 @@ g = g + scale_y_continuous(breaks = seq(1, 10, 1))
 g
 ```
 
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
+```r
+dev.copy(png, file = "plot1.png")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+```
+## png 
+##   3
+```
+
+```r
+dev.off()
+```
+
+```
+## png 
+##   2
+```
 
 As shown in the histogram, the individual frequently has 6,000-15,000 steps per day, but most frequently has 0 steps per day. 
 
@@ -82,7 +93,7 @@ summary(perday$steps)["Median"]
 ##  10395
 ```
 
-
+  
 ## Average Daily Activity Pattern
 
 The following code produces a time series plot of the average number of steps per 5-minute interval, averaged across days. 
@@ -119,6 +130,24 @@ g
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
+```r
+dev.copy(png, file = "plot2.png")
+```
+
+```
+## png 
+##   3
+```
+
+```r
+dev.off()
+```
+
+```
+## png 
+##   2
+```
+
 As shown below, the interval 835 contains the maximum amount of steps relative to the other 5-minute intervals.  
 
 
@@ -132,7 +161,7 @@ intervalMeans[intervalMeans$Average.Steps == max(intervalMeans$Average.Steps),]
 ```
 
 
-
+  
 ## Imputing Missing Values
 
 The following code finds the number of missing values in the dataset to be 2304.
@@ -199,6 +228,24 @@ g
 
 ![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
+```r
+dev.copy(png, file = "plot3.png")
+```
+
+```
+## png 
+##   3
+```
+
+```r
+dev.off()
+```
+
+```
+## png 
+##   2
+```
+
 Replacing the missing values with their mean caused the mean to be identical to the median. Additionally, the filled dataset has a greater mean and greater median than the dataset that contains NAs. 
 
 ```r
@@ -216,8 +263,7 @@ data.frame(mean = c(filledmean, namean), median = c(filledmedian, namedian), row
 ## Contains NAs  9354.23 10395.00
 ```
 
-
-
+  
 ## Difference in Activity Patterns Between Weekends and Weekdays
 
 The following code creates a new column that determines whether the date is a weekday or weekend. 
@@ -255,3 +301,21 @@ g
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+
+```r
+dev.copy(png, file = "plot4.png")
+```
+
+```
+## png 
+##   3
+```
+
+```r
+dev.off()
+```
+
+```
+## png 
+##   2
+```

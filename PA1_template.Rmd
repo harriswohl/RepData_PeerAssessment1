@@ -1,3 +1,8 @@
+---
+output:
+  html_document:
+    keep_md: true
+---
 # Reproducible Research Project 1  
 
 ## Loading and Preprocessing the Data
@@ -18,7 +23,6 @@ activity$date <- as.POSIXct(as.character(activity$date), format = "%Y-%m-%d")
 activity$interval <- as.factor(activity$interval)
 str(activity)
 ```
-
 
   
 ## Steps Per Day 
