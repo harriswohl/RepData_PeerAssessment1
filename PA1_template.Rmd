@@ -41,8 +41,6 @@ g = g + theme(plot.title = element_text(hjust = 0.5))
 g = g + scale_y_continuous(breaks = seq(1, 10, 1))
 g
 
-dev.copy(png, file = "plot1.png")
-dev.off()
 ```
 
 As shown in the histogram, the individual frequently has 6,000-15,000 steps per day, but most frequently has 0 steps per day. 
@@ -75,8 +73,6 @@ g = g + ggtitle("Average Number of Steps per Interval")
 g = g + theme(plot.title = element_text(hjust = 0.5))
 g
 
-dev.copy(png, file = "plot2.png")
-dev.off()
 ```
 
 As shown below, the interval 835 contains the maximum amount of steps relative to the other 5-minute intervals.  
@@ -131,8 +127,6 @@ g = g + ggtitle("Steps per Day Frequency (NAs removed)")
 g = g + theme(plot.title = element_text(hjust = 0.5))
 g
 
-dev.copy(png, file = "plot3.png")
-dev.off()
 ```
 
 Replacing the missing values with their mean caused the mean to be identical to the median. Additionally, the filled dataset has a greater mean and greater median than the dataset that contains NAs. 
@@ -179,6 +173,4 @@ g = g + xlab("Interval") + ylab("Steps")
 g = g + theme(plot.title = element_text(hjust = 0.5))
 g
 
-dev.copy(png, file = "plot4.png")
-dev.off()
 ```

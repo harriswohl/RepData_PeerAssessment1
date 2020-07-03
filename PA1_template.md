@@ -52,24 +52,6 @@ g
 
 ![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
-```r
-dev.copy(png, file = "plot1.png")
-```
-
-```
-## png 
-##   3
-```
-
-```r
-dev.off()
-```
-
-```
-## png 
-##   2
-```
-
 As shown in the histogram, the individual frequently has 6,000-15,000 steps per day, but most frequently has 0 steps per day. 
 
 The mean and median number of steps per day are shown below. 
@@ -129,24 +111,6 @@ g
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
-
-```r
-dev.copy(png, file = "plot2.png")
-```
-
-```
-## png 
-##   3
-```
-
-```r
-dev.off()
-```
-
-```
-## png 
-##   2
-```
 
 As shown below, the interval 835 contains the maximum amount of steps relative to the other 5-minute intervals.  
 
@@ -228,24 +192,6 @@ g
 
 ![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
-```r
-dev.copy(png, file = "plot3.png")
-```
-
-```
-## png 
-##   3
-```
-
-```r
-dev.off()
-```
-
-```
-## png 
-##   2
-```
-
 Replacing the missing values with their mean caused the mean to be identical to the median. Additionally, the filled dataset has a greater mean and greater median than the dataset that contains NAs. 
 
 ```r
@@ -301,21 +247,3 @@ g
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
-
-```r
-dev.copy(png, file = "plot4.png")
-```
-
-```
-## png 
-##   3
-```
-
-```r
-dev.off()
-```
-
-```
-## png 
-##   2
-```
