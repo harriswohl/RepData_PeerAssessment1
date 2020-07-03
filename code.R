@@ -1,16 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
-
-
-
-## Loading and Preprocessing the Data
-
-
-```{r, echo = TRUE}
+## Reading in the file
 
 fileUrl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 filePath <- tempfile()
@@ -23,19 +11,18 @@ activity <- read.csv("activity.csv")
 
 activity$date <- as.POSIXct(as.character(activity$date), format = "%Y-%m-%d")
 activity$interval <- as.factor(activity$interval)
-str(activity)
-```
 
+## Mean number of steps per day
 
+# total per day
 
-## Steps Per Day 
-
-Below is a histogram representing the total number of steps taken per day.  
-```{r, echo = TRUE, warning = FALSE}
 perday <- aggregate(activity$steps, by = list(activity$date), FUN = sum, na.rm = TRUE)
 names(perday) <- c("date", "steps")
 
+# histogram of steps per day 
+
 library(ggplot2)
+theme(plot.title = element_text(hjust = 0.5))
 g = ggplot(perday, aes(x = perday$steps))
 g = g + geom_histogram(color = "black", fill = "darkslategrey")
 g = g + ylab("Frequency") + xlab("Steps per Day")
@@ -43,23 +30,15 @@ g = g + ggtitle("Steps per Day Frequency")
 g = g + theme(plot.title = element_text(hjust = 0.5))
 g = g + scale_y_continuous(breaks = seq(1, 10, 1))
 g
-```
 
-As shown in the histogram, the individual frequently has 6,000-15,000 steps per day, but most frequently has 0 steps per day. 
+# mean and median
 
-The mean and median number of steps per day are shown below. 
-
-```{r, echo = TRUE}
 summary(perday$steps)["Mean"]
 summary(perday$steps)["Median"]
-```
 
 
-## Average Daily Activity Pattern
+## average daily activity 
 
-The following code produces a time series plot of the average number of steps per 5-minute interval, averaged across days. 
-
-```{r, echo = TRUE}
 intervalMeans <- tapply(activity$steps, activity$interval, mean, na.rm = TRUE)
 intervalMeans <- data.frame("Average.Steps" =  intervalMeans)
 intervalMeans$Interval <- as.numeric(as.character(unique(activity$interval)))
@@ -74,27 +53,19 @@ g = g + ylab("Steps")
 g = g + ggtitle("Average Number of Steps per Interval")
 g = g + theme(plot.title = element_text(hjust = 0.5))
 g
-```
 
-As shown below, the interval 835 contains the maximum amount of steps relative to the other 5-minute intervals.  
+# obtaining max interval
 
-```{r, echo = TRUE}
 intervalMeans[intervalMeans$Average.Steps == max(intervalMeans$Average.Steps),]
-```
 
+## imputing missing values
 
+# how many na
 
-## Imputing Missing Values
-
-The following code finds the number of missing values in the dataset to be 2304.
-```{r, echo = TRUE}
 na <- activity[is.na(activity),]
 nrow(na)
-```
 
-My strategy to fill in the missing values in the dataset was to use the mean for the corresponding interval across all days. I felt this was a reliable and precise measure, plus I had already created the dataset IntervalMeans that contains the average number of steps for each interval across all days.
-
-```{r, echo = TRUE}
+# replace NA with the mean of that interval 
 filled <- activity
 
 i = 1
@@ -108,18 +79,16 @@ while(i <= nrow(filled)){
         i = i + 1
 }
 
+#checking if there are any NA
+
 apply(activity, 2, anyNA)
 apply(filled, 2, anyNA)
 
-```
+# histogram of total steps per day 
 
-As the output shows, the activity dataset has NA values in the steps column, but the newly created filled dataset does not contain any NA values. 
-
-The following is a histogram of the total number of steps taken per day with missing values replaced by their means. Already it is evident that zero-step days are less frequent than in the first part of the assignment. 
-
-```{r, echo = TRUE, message=FALSE}
 dayfilled <- aggregate(filled$steps, by = list(filled$date), FUN = sum)
 names(dayfilled) <- c("date", "steps")
+head(dayfilled)
 
 g = ggplot(dayfilled, aes(x = steps))
 g = g + geom_histogram(color = "black", fill = "darkslategrey")
@@ -127,25 +96,19 @@ g = g + xlab("Steps per Day") + ylab("Frequency")
 g = g + ggtitle("Steps per Day Frequency (NAs removed)")
 g = g + theme(plot.title = element_text(hjust = 0.5))
 g
-```
 
-Replacing the missing values with their mean caused the mean to be identical to the median. Additionally, the filled dataset has a greater mean and greater median than the dataset that contains NAs. 
-```{r, echo = TRUE}
-filledmedian <- summary(dayfilled$steps)["Median"]
-filledmean <- summary(dayfilled$steps)["Mean"]
+sum(dayfilled$steps)
+sum(perday$steps, na.rm = TRUE)
 
-namedian <- summary(perday$steps)["Median"]
-namean <-summary(perday$steps)["Mean"]
-data.frame(mean = c(filledmean, namean), median = c(filledmedian, namedian), row.names = c("Filled", "Contains NAs"))
-```
+summary(dayfilled$steps)["Median"]
+summary(dayfilled$steps)["Mean"]
 
+summary(perday$steps)["Mean"]
+summary(perday$steps)["Median"]
 
+## Weekdays vs weekends
 
-## Difference in Activity Patterns Between Weekends and Weekdays
-
-The following code creates a new column that determines whether the date is a weekday or weekend. 
-
-```{r, echo = TRUE}
+#outputs weekend or weekday 
 isweekend <- function(x){
         day <- weekdays(x)
         if(day == "Saturday" | day == "Sunday"){
@@ -158,19 +121,17 @@ isweekend <- function(x){
 filled$weekType <- as.factor(
         sapply(dayfilled$date, isweekend)
 )
-```
 
-Below is a panel plot representing the average number of steps per five minute interval, seperated by weekends and weekdays. 
+# panel plot of average steps taken for each 5 min interval 
+# among weekend and weekday 
 
-```{r, echo = TRUE, message=FALSE}
 panel <- aggregate(steps~interval + weekType, data = filled, FUN = mean)
 
 library(ggplot2)
 g = ggplot(panel, aes(x = as.numeric(as.character(interval)), y = steps, color = weekType))
 g = g + geom_line(size = .75)
 g = g + facet_wrap(~weekType, ncol = 1, nrow = 2)
-g = g + ggtitle("Average Number of Steps per Interval")
+g = g + ggtitle("Average number of Steps per Interval")
 g = g + xlab("Interval") + ylab("Steps")
 g = g + theme(plot.title = element_text(hjust = 0.5))
 g
-```
